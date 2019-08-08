@@ -44,7 +44,7 @@ export function diffChildren(parentDom, newParentVNode, oldParentVNode, mounts) 
 
       newDom = diff(parentDom, newChild, oldChild, mounts)
 
-      if (oldChild == null || (tmp = newChild.ref) !== oldChild.ref) {
+      if ((tmp = newChild.ref) && (oldChild == null || tmp !== oldChild.ref)) {
         ;(refs || (refs = [])).push(tmp, newChild._component || newDom, newChild)
       }
 

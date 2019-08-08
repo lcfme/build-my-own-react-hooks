@@ -1,17 +1,25 @@
 import { component } from './component'
 import { flatten, diffChildren } from './diffChildren'
 import { coerceToVNode, Fragment } from './createElement'
+import { hookContext } from './hooks'
 export function diff(parentDom, newVNode, oldVNode, mounts = []) {
   if (typeof newVNode.type === 'function') {
     let c, tmp, isTopLevelFragment
     if (oldVNode != null) {
       c = newVNode._component = oldVNode._component
-      c.props = newVNode.props
     } else {
       c = newVNode._component = component()
-      c.props = newVNode.props
     }
+    c.props = newVNode.props
+    c._vnode = newVNode
+    c._parentDom = parentDom
+
+    hookContext.currentComponent = c
+    hookContext.currentIndex = 0
     tmp = newVNode.type(newVNode.props)
+    hookContext.currentComponent = null
+    hookContext.currentIndex = null
+    c._isNew = c._dirty = false
     isTopLevelFragment = tmp != null && tmp.type === Fragment && tmp.key == null
     flatten(isTopLevelFragment ? tmp.props.children : tmp, (newVNode._children = []), coerceToVNode)
     diffChildren(parentDom, newVNode, oldVNode, mounts)
