@@ -35,7 +35,6 @@ export function component() {
     props: null,
     _vnode: null,
     _hooks: [],
-    _isNew: true,
     _dirty: true,
     _parentDom: null,
   }

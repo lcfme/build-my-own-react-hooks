@@ -19,7 +19,7 @@ export function diff(parentDom, newVNode, oldVNode, mounts = []) {
     tmp = newVNode.type(newVNode.props)
     hookContext.currentComponent = null
     hookContext.currentIndex = null
-    c._isNew = c._dirty = false
+    c._dirty = false
     isTopLevelFragment = tmp != null && tmp.type === Fragment && tmp.key == null
     flatten(isTopLevelFragment ? tmp.props.children : tmp, (newVNode._children = []), coerceToVNode)
     diffChildren(parentDom, newVNode, oldVNode, mounts)
